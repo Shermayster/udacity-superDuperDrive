@@ -16,8 +16,8 @@
 
             <h1 class="display-5">Sign Up</h1>
             <form action="#" method="POST">
-                <div class="alert alert-dark">
-                    You successfully signed up! Please continue to the <a>login</a> page.
+                <div data-testid="success-message" th:if="${signupSuccess}" class="alert alert-dark">
+                    You successfully signed up! Please continue to the <a data-testid="login-link">login</a> page.
                 </div>
                 <div class="alert alert-danger">
                     <span>Example Signup Error Message</span>
