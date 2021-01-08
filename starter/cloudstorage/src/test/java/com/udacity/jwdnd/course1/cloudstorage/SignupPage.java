@@ -49,6 +49,10 @@ public class SignupPage {
 
     }
 
+    public WebElement getSuccessMessage() {
+        return successMessage;
+    }
+
     public void goToLogin() {
         this.loginLink.click();
     }

@@ -49,7 +49,10 @@ class CloudStorageApplicationTests {
 		SignupPage signupPage = new SignupPage(driver);
 
 		//should not show success message
-		assertFalse(signupPage.isSuccessMessageInDocument());
+//		assertFalse(signupPage.isSuccessMessageInDocument());
+		assertThrows(NoSuchElementException.class, () -> {signupPage.getSuccessMessage();});
+
+
 	}
 
 }
