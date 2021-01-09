@@ -42,16 +42,49 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	public void signupUser() {
-		String username = "superDuper";
+	public void mainFlow() {
+		String username = "superDuperUser";
 		String password = "admin";
-		driver.get("http://localhost:" + this.port + "/signup");
+		driver.get("http://localhost:" + this.port + "/login");
 		SignupPage signupPage = new SignupPage(driver);
+		LoginPage loginPage = new LoginPage(driver);
+		HomePage homePage = new HomePage(driver);
+
+		//should load login page
+		assertTrue(loginPage.getTitle().isDisplayed());
+		loginPage.goToSignup();
+
+		//should go to sign up page
+		assertTrue(signupPage.getTitle().isDisplayed());
 
 		//should not show success message
-//		assertFalse(signupPage.isSuccessMessageInDocument());
-		assertThrows(NoSuchElementException.class, () -> {signupPage.getSuccessMessage();});
+		assertThrows(NoSuchElementException.class, signupPage::getSuccessMessage);
+		//should not show error message
+		assertThrows(NoSuchElementException.class, signupPage::getErrorMessage);
 
+		// sign up new user
+		signupPage.signup("Super", "Duper", username, password);
+		assertTrue(signupPage.getSuccessMessage().isDisplayed());
+
+		// login
+		signupPage.goToLogin();
+		assertTrue(loginPage.getTitle().isDisplayed());
+		
+		// should hide logout and error messages
+		assertThrows(NoSuchElementException.class, loginPage::getErrorMessage);
+		assertThrows(NoSuchElementException.class, loginPage::getLogoutMessage);
+
+		loginPage.login(username+"error", password);
+		assertTrue(loginPage.getErrorMessage().isDisplayed());
+
+		loginPage.login(username, password);
+
+		//home page
+		assertTrue(homePage.getTitle().isDisplayed());
+
+		//logout
+		homePage.logout();
+		assertTrue(loginPage.getLogoutMessage().isDisplayed());
 
 	}
 

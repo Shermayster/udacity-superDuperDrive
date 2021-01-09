@@ -14,12 +14,12 @@
                 <label><a>Back to Login</a></label>
             </div>
 
-            <h1 class="display-5">Sign Up</h1>
-            <form action="#" method="POST">
-                <div data-testid="success-message" th:if="${signupSuccess}" class="alert alert-dark">
-                    You successfully signed up! Please continue to the <a data-testid="login-link">login</a> page.
+            <h1 data-testid="title" class="display-5">Sign Up</h1>
+            <form th:action="@{/signup}" action="#" method="POST">
+                <div th:if="${signupSuccess}" data-testid="success-message"  class="alert alert-dark">
+                    You successfully signed up! Please continue to the <a th:href="@{/login}" data-testid="login-link">login</a> page.
                 </div>
-                <div class="alert alert-danger">
+                <div th:if="${signupError}" data-testid="error-message" class="alert alert-danger">
                     <span>Example Signup Error Message</span>
                 </div>
                 <div class="form-row">
@@ -42,7 +42,7 @@
                         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button data-testid="submit-button" type="submit" class="btn btn-primary">Sign Up</button>
             </form>
         </div>
     </body>
