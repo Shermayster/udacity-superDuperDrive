@@ -12,7 +12,7 @@ A senior developer is assigned to be your tech lead and mentor, and they put tog
 
 Your tech lead already designed a database schema for the project and has added it to the `src/main/resources` directory. That means you don't have to design the database, only develop the Java code to interact with it. 
 
-Your tech lead also created some HTML templates from the design team's website mockups, and they placed them in the `src/main/resources/templates` folder. These are static pages right now, and you have to configure them with Thymeleaf to add functionality and real data from the server you develop. You may also have to change them to support testing the application.
+Your tech lead also created some HTML templates from the design team's website mockups, and they placed them in the `src/main/resources/templates` folder. These are static com.udacity.jwdnd.course1.cloudstorage.pages right now, and you have to configure them with Thymeleaf to add functionality and real data from the server you develop. You may also have to change them to support testing the application.
 
 From the link above, you can download the starter code and open it as a Maven project in IntelliJ.
 
@@ -27,7 +27,7 @@ Your tech lead is excited to work with you and has laid out a development roadma
 The back-end is all about security and connecting the front-end to database data and actions. 
 
 1. Managing user access with Spring Security
- - You have to restrict unauthorized users from accessing pages other than the login and signup pages. To do this, you must create a security configuration class that extends the `WebSecurityConfigurerAdapter` class from Spring. Place this class in a package reserved for security and configuration. Often this package is called `security` or `config`.
+ - You have to restrict unauthorized users from accessing com.udacity.jwdnd.course1.cloudstorage.pages other than the login and signup com.udacity.jwdnd.course1.cloudstorage.pages. To do this, you must create a security configuration class that extends the `WebSecurityConfigurerAdapter` class from Spring. Place this class in a package reserved for security and configuration. Often this package is called `security` or `config`.
  - Spring Boot has built-in support for handling calls to the `/login` and `/logout` endpoints. You have to use the security configuration to override the default login page with one of your own, discussed in the front-end section.
  - You also need to implement a custom `AuthenticationProvider` which authorizes user logins by matching their credentials against those stored in the database.  
 
@@ -45,7 +45,7 @@ The back-end is all about security and connecting the front-end to database data
 
 
 ### The Front-End
-Your tech lead has done a thorough job developing HTML templates for the required application pages. They have included fields, modal forms, success and error message elements, as well as styling and functional components using Bootstrap as a framework. You must edit these templates and insert Thymeleaf attributes to supply the back-end data and functionality described by the following individual page requirements:
+Your tech lead has done a thorough job developing HTML templates for the required application com.udacity.jwdnd.course1.cloudstorage.pages. They have included fields, modal forms, success and error message elements, as well as styling and functional components using Bootstrap as a framework. You must edit these templates and insert Thymeleaf attributes to supply the back-end data and functionality described by the following individual page requirements:
 
 1. Login page
  - Everyone should be allowed access to this page, and users can use this page to login to the application. 
@@ -83,7 +83,7 @@ The home page should have a logout button that allows the user to logout of the 
 Your tech lead trusts you to do a good job, but testing is important whether you're an excel number-cruncher or a full-stack coding superstar! The QA team at Super*Duper*Drive carries out extensive user testing. Still, your tech lead wants you to write some simple Selenium tests to verify user-facing functionality and prove that your code is feature-complete before the testers get their hands on it.
 
 1. Write tests for user signup, login, and unauthorized access restrictions.
- - Write a test that verifies that an unauthorized user can only access the login and signup pages.
+ - Write a test that verifies that an unauthorized user can only access the login and signup com.udacity.jwdnd.course1.cloudstorage.pages.
  - Write a test that signs up a new user, logs in, verifies that the home page is accessible, logs out, and verifies that the home page is no longer accessible. 
 
 

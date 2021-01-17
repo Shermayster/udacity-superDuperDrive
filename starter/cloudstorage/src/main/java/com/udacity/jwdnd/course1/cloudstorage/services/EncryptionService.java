@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
@@ -47,4 +49,18 @@ public class EncryptionService {
 
         return new String(decryptedValue);
     }
+
+    public String getSecuredKey() {
+        try {
+            KeyGenerator gen = KeyGenerator.getInstance("AES");
+            gen.init(128);
+            SecretKey secretKey = gen.generateKey();
+            byte[] binary = secretKey.getEncoded();
+            return String.format("%32X", new BigInteger(+1, binary));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
