@@ -144,7 +144,7 @@
                                     <td>
                                         <button data-testid="credential-edit"
                                                 th:onclick="javascript:showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.username}]], [[${encryptionService.decryptValue(credential.password, credential.key)}]])" type="button" class="btn btn-success">Edit</button>
-                                        <a data-testid="credential-delete" th:href="'/delete-credential/' + ${credential.credentialId}" class="btn btn-danger">Delete</a>
+                                        <a data-testid="credential-delete" th:href="'delete-credential/' + ${credential.credentialId}" class="btn btn-danger">Delete</a>
                                     </td>
                                     <th data-testid="credential-url" th:text="${credential.url}" scope="row">Example Credential URL</th>
                                     <td data-testid="credential-username" th:text="${credential.username}">Example Credential Username</td>

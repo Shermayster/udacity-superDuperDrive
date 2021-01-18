@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -171,12 +172,17 @@ public class HomePage {
     public WebElement getCredentialFormSubmit() {
         return credentionSection.submitBtn;
     };
-    public void closeCredentialForm() {
+    public void closeCredentialForm() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, 30);
-        WebElement closeBtn = credentionSection.getCloseFormBtn();
-        wait.until(ExpectedConditions.elementToBeClickable(closeBtn));
-        credentionSection.getCloseFormBtn().click();
+        wait.until(ExpectedConditions.elementToBeClickable(credentionSection.getCloseFormBtn()));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("[data-testid='credential-modal']"))));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", credentionSection.getCloseFormBtn());
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("[data-testid='credential-modal']"))));
+    }
+    public void deleteFirstCredential() {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(getCredentialDeleteBtnList().get(0)));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", getCredentialDeleteBtnList().get(0));
     }
     public List<WebElement> getCredentialRowList() {
         return credentionSection.rowList;

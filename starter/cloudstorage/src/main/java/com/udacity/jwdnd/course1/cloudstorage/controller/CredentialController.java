@@ -36,17 +36,19 @@ public class CredentialController {
         List<Credential> credentialList = credentialsService.getCredentials(username);
 
         model.addAttribute("credentials", credentialList);
-        return "redirect:home";
+        return "redirect:/home";
     }
 
     @GetMapping("/delete-credential/{credentialId}")
-    public String deleteCredential(@PathVariable("credentialId") int credentialId) {
+    public String deleteCredential(@PathVariable("credentialId") int credentialId, Model model) {
+        System.out.println(credentialId);
         try {
             this.credentialsService.deleteCredential(credentialId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            model.addAttribute("error", e);
         }
-        return "redirect:home";
+        return "redirect:/home";
     }
 
 }

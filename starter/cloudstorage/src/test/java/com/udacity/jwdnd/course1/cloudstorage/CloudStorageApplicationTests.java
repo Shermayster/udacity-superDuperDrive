@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.ResultPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.NoSuchElementException;
@@ -27,7 +28,6 @@ class CloudStorageApplicationTests {
 
 	@BeforeAll
 	static void beforeAll() {
-
 		WebDriverManager.firefoxdriver().setup();
 	}
 
@@ -105,7 +105,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void notesFlow() {
-		this.signUp("superDuperUser", "admin");
+		login("superDuperUser", "admin");
 		// add note
 		this.homePage.goToNotesTab();
 		this.homePage.addNote("test note", "this the test note");
@@ -138,8 +138,9 @@ class CloudStorageApplicationTests {
 		String testUrl = "superduper.com";
 		String testUsername = "admin";
 		String testPassword = "admin";
-		this.signUp("superDuperUser", "admin");
+		login("superDuperUser", "admin");
 		// add credentials
+
 		homePage.goToCredentialsTab();
 		homePage.addCredential(testUrl, "admin", "admin");
 		homePage.goToCredentialsTab();
@@ -170,14 +171,21 @@ class CloudStorageApplicationTests {
 		assertEquals(updatedUrl, homePage.getCredentialUrlList().get(0).getText());
 
 		// delete credentials
-		homePage.getCredentialDeleteBtnList().get(0).click();
+		homePage.deleteFirstCredential();
+		homePage.goToCredentialsTab();
 		assertEquals(0, homePage.getCredentialRowList().size());
 	}
+
+
+
 
 	private void signUp(String username, String password) {
 		driver.get("http://localhost:" + this.port + "/signup");
 		signupPage.signup("Super", "Duper", username, password);
 		signupPage.goToLogin();
+		loginPage.login(username, password);
+	}
+	private void login(String username, String password) {
 		loginPage.login(username, password);
 	}
 

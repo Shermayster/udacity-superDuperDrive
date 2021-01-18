@@ -30,13 +30,13 @@ public class NotesController {
         }
         this.clearNoteForm(noteForm);
         model.addAttribute("notes", noteService.getUserNotes(username));
-        return "redirect:home#nav-notes";
+        return "redirect:/home";
     }
 
     @GetMapping("/delete-note/{noteId}")
     public String deleteNote(@PathVariable("noteId") int noteId) {
         this.noteService.deleteNote(noteId);
-        return "redirect:home";
+        return "redirect:/home";
     }
 
     private void clearNoteForm(NoteForm noteForm) {
