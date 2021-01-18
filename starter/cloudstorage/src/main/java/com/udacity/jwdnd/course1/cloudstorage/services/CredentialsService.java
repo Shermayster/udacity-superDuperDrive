@@ -36,11 +36,23 @@ public class CredentialsService {
         newCredential.setKey(key);
         newCredential.setUsername(credentialForm.getUsername());
         credentialMapper.insertCredential(newCredential);
+    }
+
+    public void updateCredential(CredentialForm credentialForm) {
+        Credential credential = credentialMapper.getCredential(credentialForm.getCredentialId());
+        credential.setUsername(credentialForm.getUsername());
+        credential.setUrl(credentialForm.getUrl());
+        if(!encryptionService.decryptValue(credential.getPassword(), credential.getKey()).equals(credentialForm.getPassword())) {
+            String key = encryptionService.getSecuredKey();
+            String encryptedPassword = encryptionService.encryptValue(credentialForm.getPassword(), key);
+            credential.setPassword(encryptedPassword);
+            credential.setKey(key);
+        }
+        credentialMapper.updateCredential(credential);
 
     }
 
-   public String decryptPassword(Credential credential) {
-        System.out.println("credential" + credential);
-        return encryptionService.decryptValue(credential.getPassword(), credential.getKey());
-   }
+    public void deleteCredential(int credentialId) {
+        credentialMapper.deleteCredential(credentialId);
+    }
 }

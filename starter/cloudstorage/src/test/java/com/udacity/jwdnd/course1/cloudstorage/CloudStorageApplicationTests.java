@@ -134,7 +134,7 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	public void credentialFlow() {
+	public void credentialFlow() throws InterruptedException {
 		String testUrl = "superduper.com";
 		String testUsername = "admin";
 		String testPassword = "admin";
@@ -149,8 +149,29 @@ class CloudStorageApplicationTests {
 		// password should encrypted
 		assertNotEquals(testPassword, homePage.getCredentialPasswordList().get(0).getText());
 		assertTrue(homePage.getCredentialPasswordList().get(0).getText().length() > testPassword.length());
+		//edit credentials
 		homePage.getCredentialEditBtnList().get(0).click();
 		assertTrue(homePage.testCredentialForm(testUrl, testUsername, testPassword));
+		String updatedUrl = "foo.com";
+		String updatedUsername = "username";
+		String updatedPassword = "password";
+		homePage.getCredentialUrlInput().clear();
+		homePage.getCredentialUrlInput().sendKeys(updatedUrl);
+		homePage.getCredentialUsernameInput().clear();
+		homePage.getCredentialUsernameInput().sendKeys(updatedUsername);
+		homePage.getCredentialPasswordInput().clear();
+		homePage.getCredentialPasswordInput().sendKeys(updatedPassword);
+		homePage.getCredentialFormSubmit().click();
+		homePage.goToCredentialsTab();
+		homePage.getCredentialEditBtnList().get(0).click();
+		assertTrue(homePage.testCredentialForm(updatedUrl, updatedUsername, updatedPassword));
+		homePage.getCredentialUrlInput().sendKeys("should note be updated");
+		homePage.closeCredentialForm();
+		assertEquals(updatedUrl, homePage.getCredentialUrlList().get(0).getText());
+
+		// delete credentials
+		homePage.getCredentialDeleteBtnList().get(0).click();
+		assertEquals(0, homePage.getCredentialRowList().size());
 	}
 
 	private void signUp(String username, String password) {

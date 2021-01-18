@@ -30,7 +30,7 @@ public class HomeController {
         String username = authentication.getName();
         model.addAttribute("notes", this.noteService.getUserNotes(username));
         model.addAttribute("credentials", this.credentialsService.getCredentials(username));
-        model.addAttribute("credentialsService", encryptionService);
+        model.addAttribute("encryptionService", encryptionService);
         return "home";
     }
 }
