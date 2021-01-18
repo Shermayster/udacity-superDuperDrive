@@ -1,11 +1,14 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -121,6 +124,13 @@ public class HomePage {
         @FindAll({@FindBy(css = "[data-testid='credential-edit']")})
         public List<WebElement> editBtnList;
 
+        @FindAll({@FindBy(css = "[data-testid='credential-delete']")})
+        public List<WebElement> deleteBtnList;
+
+        public WebElement getCloseFormBtn() {
+            return driver.findElement(By.cssSelector("[data-testid='credentials-close-form']"));
+        };
+
         public CredentionSection(WebDriver webDriver) {
             PageFactory.initElements(webDriver, this);
         }
@@ -142,25 +152,50 @@ public class HomePage {
        credentionSection.passwordInput.sendKeys(password);
        credentionSection.submitBtn.click();
     }
+
+
     public boolean testCredentialForm(String url, String username, String password) {
-        return credentionSection.urlInput.getText().equals(url)
-                && credentionSection.userNameInput.getText().equals(username)
-                && credentionSection.passwordInput.getText().equals(password);
+        return credentionSection.urlInput.getAttribute("value").equals(url)
+                && credentionSection.userNameInput.getAttribute("value").equals(username)
+                && credentionSection.passwordInput.getAttribute("value").equals(password);
     }
 
+    public WebElement getCredentialUsernameInput() {
+        return credentionSection.userNameInput;
+    };
+    public WebElement getCredentialPasswordInput() {
+        return credentionSection.passwordInput;
+    };
+    public WebElement getCredentialUrlInput() {
+        return credentionSection.urlInput;
+    };
+    public WebElement getCredentialFormSubmit() {
+        return credentionSection.submitBtn;
+    };
+    public void closeCredentialForm() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(credentionSection.getCloseFormBtn()));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("[data-testid='credential-modal']"))));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", credentionSection.getCloseFormBtn());
+        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("[data-testid='credential-modal']"))));
+    }
+    public void deleteFirstCredential() {
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.elementToBeClickable(getCredentialDeleteBtnList().get(0)));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", getCredentialDeleteBtnList().get(0));
+    }
     public List<WebElement> getCredentialRowList() {
         return credentionSection.rowList;
     }
-
     public List<WebElement> getCredentialUsernameList() {
         return credentionSection.usernameList;
     }
-
     public List<WebElement> getCredentialPasswordList() {
         return credentionSection.passwordList;
     }
-
     public List<WebElement> getCredentialEditBtnList() {return credentionSection.editBtnList;};
+
+    public List<WebElement> getCredentialDeleteBtnList() {return credentionSection.deleteBtnList;};
 
     public List<WebElement> getCredentialUrlList() {
         return credentionSection.urlList;

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     private NoteService noteService;
     private CredentialsService credentialsService;
-    public HomeController(NoteService noteService, CredentialsService credentialsService) {
+    private EncryptionService encryptionService;
+    public HomeController(NoteService noteService, EncryptionService encryptionService, CredentialsService credentialsService) {
         this.noteService = noteService;
+        this.encryptionService = encryptionService;
         this.credentialsService = credentialsService;
     }
 
@@ -28,7 +30,7 @@ public class HomeController {
         String username = authentication.getName();
         model.addAttribute("notes", this.noteService.getUserNotes(username));
         model.addAttribute("credentials", this.credentialsService.getCredentials(username));
-        model.addAttribute("credentialsService", credentialsService);
+        model.addAttribute("encryptionService", encryptionService);
         return "home";
     }
 }

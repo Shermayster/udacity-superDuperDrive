@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.ResultPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.NoSuchElementException;
@@ -27,7 +28,6 @@ class CloudStorageApplicationTests {
 
 	@BeforeAll
 	static void beforeAll() {
-
 		WebDriverManager.firefoxdriver().setup();
 	}
 
@@ -105,7 +105,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void notesFlow() {
-		this.signUp("superDuperUser", "admin");
+		login("superDuperUser", "admin");
 		// add note
 		this.homePage.goToNotesTab();
 		this.homePage.addNote("test note", "this the test note");
@@ -134,12 +134,13 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	public void credentialFlow() {
+	public void credentialFlow() throws InterruptedException {
 		String testUrl = "superduper.com";
 		String testUsername = "admin";
 		String testPassword = "admin";
-		this.signUp("superDuperUser", "admin");
+		login("superDuperUser", "admin");
 		// add credentials
+
 		homePage.goToCredentialsTab();
 		homePage.addCredential(testUrl, "admin", "admin");
 		homePage.goToCredentialsTab();
@@ -149,14 +150,42 @@ class CloudStorageApplicationTests {
 		// password should encrypted
 		assertNotEquals(testPassword, homePage.getCredentialPasswordList().get(0).getText());
 		assertTrue(homePage.getCredentialPasswordList().get(0).getText().length() > testPassword.length());
+		//edit credentials
 		homePage.getCredentialEditBtnList().get(0).click();
 		assertTrue(homePage.testCredentialForm(testUrl, testUsername, testPassword));
+		String updatedUrl = "foo.com";
+		String updatedUsername = "username";
+		String updatedPassword = "password";
+		homePage.getCredentialUrlInput().clear();
+		homePage.getCredentialUrlInput().sendKeys(updatedUrl);
+		homePage.getCredentialUsernameInput().clear();
+		homePage.getCredentialUsernameInput().sendKeys(updatedUsername);
+		homePage.getCredentialPasswordInput().clear();
+		homePage.getCredentialPasswordInput().sendKeys(updatedPassword);
+		homePage.getCredentialFormSubmit().click();
+		homePage.goToCredentialsTab();
+		homePage.getCredentialEditBtnList().get(0).click();
+		assertTrue(homePage.testCredentialForm(updatedUrl, updatedUsername, updatedPassword));
+		homePage.getCredentialUrlInput().sendKeys("should note be updated");
+		homePage.closeCredentialForm();
+		assertEquals(updatedUrl, homePage.getCredentialUrlList().get(0).getText());
+
+		// delete credentials
+		homePage.deleteFirstCredential();
+		homePage.goToCredentialsTab();
+		assertEquals(0, homePage.getCredentialRowList().size());
 	}
+
+
+
 
 	private void signUp(String username, String password) {
 		driver.get("http://localhost:" + this.port + "/signup");
 		signupPage.signup("Super", "Duper", username, password);
 		signupPage.goToLogin();
+		loginPage.login(username, password);
+	}
+	private void login(String username, String password) {
 		loginPage.login(username, password);
 	}
 

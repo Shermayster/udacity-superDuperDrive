@@ -142,8 +142,9 @@
                                 <tbody>
                                 <tr data-testid="credentials-row" th:each="credential : ${credentials}">
                                     <td>
-                                        <button data-testid="credential-edit" th:onclick="javascript:showCredentialModal([[${credential}]])" type="button" class="btn btn-success">Edit</button>
-                                        <a data-testid="credential-delete" class="btn btn-danger">Delete</a>
+                                        <button data-testid="credential-edit"
+                                                th:onclick="javascript:showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.username}]], [[${encryptionService.decryptValue(credential.password, credential.key)}]])" type="button" class="btn btn-success">Edit</button>
+                                        <a data-testid="credential-delete" th:href="'delete-credential/' + ${credential.credentialId}" class="btn btn-danger">Delete</a>
                                     </td>
                                     <th data-testid="credential-url" th:text="${credential.url}" scope="row">Example Credential URL</th>
                                     <td data-testid="credential-username" th:text="${credential.username}">Example Credential Username</td>
@@ -153,7 +154,7 @@
                             </table>
                         </div>
 
-                        <div class="modal fade" id="credentialModal" tabindex="-1" role="dialog" aria-labelledby="credentialModalLabel" aria-hidden="true">
+                        <div class="modal fade" data-testid="credential-modal" id="credentialModal" tabindex="-1" role="dialog" aria-labelledby="credentialModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -163,7 +164,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form data-testid="credential-form" th:object="${credentialForm}" th:action="@{/add-credential}" action="#" method="POST">
+                                        <form id="credential-form" data-testid="credential-form" th:object="${credentialForm}" th:action="@{/add-credential}" action="#" method="POST">
                                             <input type="hidden" name="credentialId" id="credential-id">
                                             <div class="form-group">
                                                 <label for="credential-url" class="col-form-label">URL</label>
@@ -181,7 +182,7 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button data-testid="credentials-close-form" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <button data-testid="credentials-submit" type="button" class="btn btn-primary" onclick="$('#credentialSubmit').click();">Save changes</button>
                                     </div>
                                 </div>
@@ -207,22 +208,11 @@
             }
 
             // For opening the credentials modal
-            async function showCredentialModal(credential = {}) {
-                const {credentialId, url, username, password, key} = credential;
-                let decryptedPassword;
-                if(password && key) {
-                    decryptedPassword = await fetch('/password', {method:"POST", body: JSON.stringify(credential)})
-                        .then(res => res.json())
-                        .then(data => {
-                        console.log('data', data);
-                        return data;
-                    });
-                }
-                console.log(decryptedPassword);
+            function showCredentialModal(credentialId, url, username, password) {
                 $('#credential-id').val(credentialId ? credentialId : '');
                 $('#credential-url').val(url ? url : '');
                 $('#credential-username').val(username ? username : '');
-                $('#credential-password').val(decryptedPassword ? decryptedPassword : '');
+                $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
             }
         </script>

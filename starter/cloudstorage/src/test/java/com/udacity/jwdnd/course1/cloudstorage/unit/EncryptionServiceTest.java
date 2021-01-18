@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.units;
+package com.udacity.jwdnd.course1.cloudstorage.unit;
 
 import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import org.junit.jupiter.api.BeforeEach;
