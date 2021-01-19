@@ -20,7 +20,7 @@
                     You successfully signed up! Please continue to the <a th:href="@{/login}" data-testid="login-link">login</a> page.
                 </div>
                 <div th:if="${signupError}" data-testid="error-message" class="alert alert-danger">
-                    <span>Example Signup Error Message</span>
+                    <span th:text="${signupError}">Example Signup Error Message</span>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
