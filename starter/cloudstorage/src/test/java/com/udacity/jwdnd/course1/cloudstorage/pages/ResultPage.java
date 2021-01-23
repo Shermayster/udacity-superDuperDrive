@@ -24,9 +24,9 @@ public class ResultPage {
 
     public void gotoHomePage() {
         if(isSuccess()) {
-            this.driver.findElement(By.cssSelector("[data-testid='success-home-link']"));
+            this.driver.findElement(By.cssSelector("[data-testid='success-home-link']")).click();
         } else {
-            this.driver.findElement(By.cssSelector("[data-testid='error-home-link']"));
+            this.driver.findElement(By.cssSelector("[data-testid='error-home-link']")).click();
         }
     }
 

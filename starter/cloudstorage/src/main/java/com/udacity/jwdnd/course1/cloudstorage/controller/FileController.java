@@ -52,7 +52,6 @@ public class FileController {
         } else {
             model.addAttribute("error", result);
         }
-
         return "result";
     }
 

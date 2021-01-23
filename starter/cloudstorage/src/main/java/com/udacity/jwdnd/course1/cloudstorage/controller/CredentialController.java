@@ -22,33 +22,37 @@ public class CredentialController {
 
     @PostMapping("/add-credential")
     public String postCredentials(Authentication authentication, CredentialForm credentialForm, Model model) {
-
+        int credentialId;
         String username = authentication.getName();
-        if(credentialForm.getCredentialId() == null) {
-            this.credentialsService.addCredential(credentialForm, username);
-        } else {
-            this.credentialsService.updateCredential(credentialForm);
-        }
-        credentialForm.setCredentialId(null);
-        credentialForm.setUrl("");
-        credentialForm.setPassword("");
-        credentialForm.setUsername("");
-        List<Credential> credentialList = credentialsService.getCredentials(username);
+        try{
+            if(credentialForm.getCredentialId() == null) {
+                credentialId = credentialsService.addCredential(credentialForm, username);
+            } else {
+                credentialId = credentialsService.updateCredential(credentialForm);
+            }
+            if(credentialId > 0) {
+                model.addAttribute("success", true);
+            } else {
+                model.addAttribute("error", "an error accrue");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "server error");
 
-        model.addAttribute("credentials", credentialList);
-        return "redirect:/home";
+        }
+        return "result";
     }
 
     @GetMapping("/delete-credential/{credentialId}")
     public String deleteCredential(@PathVariable("credentialId") int credentialId, Model model) {
-        System.out.println(credentialId);
         try {
             this.credentialsService.deleteCredential(credentialId);
+            model.addAttribute("success", true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             model.addAttribute("error", e);
         }
-        return "redirect:/home";
+        return "result";
     }
 
 }

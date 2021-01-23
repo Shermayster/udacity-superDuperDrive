@@ -23,20 +23,42 @@ public class NotesController {
     @PostMapping("/note")
     public String postNoteMessage(Authentication authentication, NoteForm noteForm, Model model) {
         String username = authentication.getName();
-        if(noteForm.getNoteId() == null) {
-            this.noteService.addNote(noteForm, username);
-        } else {
-            this.noteService.updateNote(noteForm);
+        try{
+            int noteId;
+            if(noteForm.getNoteId() == null) {
+                noteId = noteService.addNote(noteForm, username);
+            } else {
+                noteId = noteService.updateNote(noteForm);
+            }
+            if(noteId > 0) {
+                model.addAttribute("success", true);
+            } else {
+                model.addAttribute("error", "an error accrue");
+            }
+            this.clearNoteForm(noteForm);
+        }catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "server error");
         }
-        this.clearNoteForm(noteForm);
-        model.addAttribute("notes", noteService.getUserNotes(username));
-        return "redirect:/home";
+
+        return "result";
     }
 
     @GetMapping("/delete-note/{noteId}")
-    public String deleteNote(@PathVariable("noteId") int noteId) {
-        this.noteService.deleteNote(noteId);
-        return "redirect:/home";
+    public String deleteNote(@PathVariable("noteId") int noteId, Model model) {
+        try {
+            int deletedId = noteService.deleteNote(noteId);
+            if(deletedId > 0) {
+                model.addAttribute("success", true);
+            }  else {
+                model.addAttribute("error", "error during save");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "server error");
+        }
+        return "result";
+
     }
 
     private void clearNoteForm(NoteForm noteForm) {

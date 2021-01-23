@@ -1,6 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage.config;
 
 import com.udacity.jwdnd.course1.cloudstorage.services.AuthenticationService;
+
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.authorizeRequests()
                     .antMatchers("/signup", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated().and().logout().permitAll();
+
 
             http.formLogin()
                     .loginPage("/login")

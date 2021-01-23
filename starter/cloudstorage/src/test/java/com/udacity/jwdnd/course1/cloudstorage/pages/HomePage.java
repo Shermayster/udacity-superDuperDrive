@@ -180,9 +180,7 @@ public class HomePage {
         wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector("[data-testid='credential-modal']"))));
     }
     public void deleteFirstCredential() {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.elementToBeClickable(getCredentialDeleteBtnList().get(0)));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", getCredentialDeleteBtnList().get(0));
+        getCredentialDeleteBtnList().get(0).click();
     }
     public List<WebElement> getCredentialRowList() {
         return credentionSection.rowList;

@@ -21,24 +21,24 @@ public class NoteService {
         return  this.noteMapper.getUserNotes(userId);
     }
 
-    public void addNote(NoteForm noteForm, String username) {
+    public int addNote(NoteForm noteForm, String username) {
         Note newNote = new Note();
         int userId = this.userService.getUser(username).getUserId();
         newNote.setNoteTitle(noteForm.getTitle());
         newNote.setNoteDescription(noteForm.getDescription());
         newNote.setUserId(userId);
-        noteMapper.insertNote(newNote);
+       return noteMapper.insertNote(newNote);
     }
 
-    public void updateNote(NoteForm noteForm) {
+    public int updateNote(NoteForm noteForm) {
         Note updatedNote = new Note();
         updatedNote.setNoteTitle(noteForm.getTitle());
         updatedNote.setNoteId(noteForm.getNoteId());
         updatedNote.setNoteDescription(noteForm.getDescription());
-        noteMapper.updateNote(updatedNote);
+        return noteMapper.updateNote(updatedNote);
     }
 
-    public void deleteNote(int noteId){
-        this.noteMapper.deleteNote(noteId);
+    public int deleteNote(int noteId){
+        return noteMapper.deleteNote(noteId);
     }
 }
